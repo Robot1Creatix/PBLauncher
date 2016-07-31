@@ -177,7 +177,7 @@ public class Modpack {
 	public static String readHtml(File file, boolean addPrefix) throws IOException
 	{
 		String src = FileUtils.readFile(file);
-		if(src.startsWith("<!DOCTYPE html>"))
+		if(src.startsWith("<!DOCTYPE html>") && !addPrefix)
 		{
 			src = src.substring(16);
 		}
@@ -189,7 +189,7 @@ public class Modpack {
 		if(!src.substring(0, src.length() - 1).endsWith("</html>"))
 		{
 			if(addPrefix){
-				src = "<html>" + src;
+				src = "<!DOCTYPE html><html>" + src;
 			}
 			src += "</html>";
 			src = src.replaceAll("\n", "<br>");
