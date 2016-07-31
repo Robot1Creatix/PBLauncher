@@ -40,7 +40,7 @@ public class Logger {
 				logW.append(o.toString()+ln);
 				logW.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace(Core.log);
 			}
 		}
 	}
