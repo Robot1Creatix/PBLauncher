@@ -28,7 +28,7 @@ public class Logger {
 			logFile.createNewFile();
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			e.printStackTrace(Core.log);
 		}
 	}
 	public static void put(Object ...objects)

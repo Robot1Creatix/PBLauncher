@@ -1,20 +1,14 @@
 package com.creatix.projectbronze.launcher.core;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import com.creatix.projectbronze.launcher.config.Config;
+import com.creatix.projectbronze.launcher.log.LogStream;
 import com.creatix.projectbronze.launcher.log.Logger;
 import com.creatix.projectbronze.minecraft.Modpack;
 
 public class Core {	
 	public static boolean debug, onlyconsole;
 	public static boolean root;
+	public static final LogStream log = new LogStream();
 	public static void main(String[] args)
 	{
 		for(int i = 0; i < args.length; i++)
@@ -79,15 +73,8 @@ public class Core {
 		}
 		return null;
 	}
-	public static void print(Object ...objects ){
-		String ret = "";
-		for(Object o : objects)
-		{
-			ret += o+" ";
-		}
-		Logger.put(objects);
-		System.out.println(ret);
-	}
+
+
 	public static boolean isWindows()
 	{
 		return getSystemProperty(SystemProperty.OSNAME).equals("Windows");
