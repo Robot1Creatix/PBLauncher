@@ -15,8 +15,6 @@ import com.creatix.projectbronze.minecraft.Modpack;
 public class Core {	
 	public static boolean debug, onlyconsole;
 	public static boolean root;
-	public static List<String> l1 = new ArrayList<String>();
-	public static List<String> l2 = new ArrayList<String>();
 	public static void main(String[] args)
 	{
 		for(int i = 0; i < args.length; i++)
