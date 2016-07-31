@@ -39,7 +39,7 @@ public class Config {
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			e.printStackTrace(Core.log);
 		}
 	}
 	private static void loadConfig(){
@@ -50,7 +50,7 @@ public class Config {
 			MaxRam = new Integer(prop.getProperty("MaxRam"));
 			mcDir = prop.getProperty("MinecraftFolder");
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(Core.log);
 		}
 	}
 	private static void deleteConfig()
@@ -74,7 +74,7 @@ public class Config {
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			e.printStackTrace(Core.log);
 		}
 	}
 }

@@ -14,17 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import com.creatix.projectbronze.launcher.config.Config;
 import com.creatix.projectbronze.launcher.core.Core;
 import com.creatix.projectbronze.launcher.core.SystemProperty;
 
 public class Modpack {
-	public static List<Modpack> list = new ArrayList<Modpack>();
+	public static final List<Modpack> modpacks = new ArrayList<Modpack>();
 	public static final char sep = File.separatorChar;
 	public String id, name, version, mcversion;
 	public URL url;
 	public File folder;
+	public Icon logo;
 	private static String tmpfolder = Core.getSystemProperty(SystemProperty.UHOME) + sep + "ProjectBronze" + sep + "Temp";
 	public Modpack(String id, String name, String version,String mcversion ,String url)
 	{
@@ -41,6 +44,7 @@ public class Modpack {
 			new File(tmpfolder).mkdirs();
 		this.folder = new File(Config.mcDir+Config.sep+id);
 		this.createfolder();
+		this.createIcon();
 	}
 	public static void createfolder(Modpack modpack)
 	{
@@ -143,11 +147,23 @@ public class Modpack {
         bos.close();
     }
 	
+	private void createIcon()
+	{
+		try
+		{
+			logo = new ImageIcon(ImageIO.read(new File(folder, "logo.png")));
+		}
+		catch (IOException e)
+		{
+			Core.log.println("Unable to read icon for modpack " + name + ". Did modpack folder contain icon.png file?");
+		}
+	}
+	
 	private static void add(Modpack ...modpack)
 	{
 		for(Modpack m : modpack)
 		{
-			list.add(m);
+			modpacks.add(m);
 		}
 	}
 	public static void initModpacks()

@@ -1,14 +1,13 @@
 package com.creatix.projectbronze.launcher.core;
 
-import com.creatix.projectbronze.launcher.GUI.LauncherFrame;
-import com.creatix.projectbronze.launcher.core.*;
+import com.gt22.gui.GUI;
 
 public class BronzeLauncher {
 	public static void start(boolean debug,boolean onlyconsole)
 	{
 		Core.log.println("Launching with arguments : Only-Console "+onlyconsole+", Debug "+debug);
 		if(!onlyconsole)
-			LauncherFrame.open();
+			GUI.init();
 		else
 			console();
 	}
