@@ -40,6 +40,10 @@ public class Core {
 		{
 			ret += "macOS::";
 		}
+		else
+		{
+			ret += "undefined::";
+		}
 		ret += System.getProperty("os.version")+"::";//2
 		if(System.getProperty("os.arch").toLowerCase().contains("i3"))//3
 		{
@@ -48,6 +52,10 @@ public class Core {
 		else if(System.getProperty("os.arch").toLowerCase().contains("64"))
 		{
 			ret += "x64::";
+		}
+		else
+		{
+			ret += "undefined::";
 		}
 		ret += System.getProperty("java.version")+"::";//4
 		ret += System.getProperty("java.home")+"::";//5
