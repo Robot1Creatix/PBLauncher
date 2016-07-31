@@ -5,14 +5,14 @@ import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import javax.swing.JFrame;
+import com.creatix.projectbronze.launcher.utils.Const;
 
 public class MainFrame extends JFrame
 {
 	private MainPanel mainpanel;
-	public static final int startwidth = 700, startheight = 500;
 	public MainFrame()
 	{
-		setSize(startwidth, startheight);
+		setSize(Const.startwidth, Const.startheight);
 		setTitle("Project bronze launcher");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
