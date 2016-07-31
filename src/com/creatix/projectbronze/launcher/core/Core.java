@@ -29,16 +29,26 @@ public class Core {
 	{
 		String ret = "";
 		if(System.getProperty("os.name").toLowerCase().contains("windows"))//1
+		{
 			ret += "Windows::";
-		if(System.getProperty("os.name").toLowerCase().contains("linux") || System.getProperty("os.name").toLowerCase().contains("unix") || System.getProperty("os.name").toLowerCase().contains("steam"))
+		}
+		else if(System.getProperty("os.name").toLowerCase().contains("linux") || System.getProperty("os.name").toLowerCase().contains("unix") || System.getProperty("os.name").toLowerCase().contains("steam"))
+		{
 			ret += "Linux::";
-		if(System.getProperty("os.name").toLowerCase().contains("mac"))
+		}
+		else if(System.getProperty("os.name").toLowerCase().contains("mac"))
+		{
 			ret += "macOS::";
+		}
 		ret += System.getProperty("os.version")+"::";//2
 		if(System.getProperty("os.arch").toLowerCase().contains("i3"))//3
+		{
 			ret += "x32::";
-		if(System.getProperty("os.arch").toLowerCase().contains("64"))
+		}
+		else if(System.getProperty("os.arch").toLowerCase().contains("64"))
+		{
 			ret += "x64::";
+		}
 		ret += System.getProperty("java.version")+"::";//4
 		ret += System.getProperty("java.home")+"::";//5
 		ret += System.getProperty("user.name")+"::";//6
@@ -48,30 +58,7 @@ public class Core {
 	public static String getSystemProperty(SystemProperty prop)
 	{
 		String[] props = initializeSystem().split("::");
-		switch(prop){
-			case OSNAME:{
-				return props[0]; 
-			}
-			case OSVERSION:{
-				return props[1];
-			}
-			case OSARCH:{
-				return props[2];
-			}
-			case JVERSION:{
-				return props[3];
-			}
-			case JHOME:{
-				return props[4];
-			}
-			case UNAME:{
-				return props[5];
-			}
-			case UHOME:{
-				return props[6];
-			}
-		}
-		return null;
+		return props[prop.toInt()];
 	}
 
 
