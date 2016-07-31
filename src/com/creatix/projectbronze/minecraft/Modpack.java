@@ -1,8 +1,10 @@
 package com.creatix.projectbronze.minecraft;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import com.creatix.projectbronze.launcher.config.Config;
 import com.creatix.projectbronze.launcher.core.Core;
@@ -33,7 +37,10 @@ public class Modpack {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+		if(!new File(tmpfolder).exists())
+			new File(tmpfolder).mkdirs();
 		this.folder = new File(Config.mcDir+Config.sep+id);
+		this.createfolder();
 	}
 	public static void createfolder(Modpack modpack)
 	{
@@ -46,12 +53,8 @@ public class Modpack {
 	}
 	public void createfolder()
 	{
-		try {
-			if(!this.folder.exists())
-				this.folder.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		if(!this.folder.exists())
+			this.folder.mkdirs();
 	}
 	public static void download(Modpack modpack)
 	{
@@ -95,11 +98,50 @@ public class Modpack {
 			 FileOutputStream fos = new FileOutputStream(tmpfolder+sep+id+".zip");
 			 fos.write(response);
 			 fos.close();
+			 unzip();
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
 	}
+	
+	public void unzip(){
+		try{
+			File destDir = folder;
+	        if (!destDir.exists()) {
+	            destDir.mkdirs();
+	        }
+	        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(tmpfolder+sep+id+".zip"));
+	        ZipEntry entry = zipIn.getNextEntry();
+	        while (entry != null) {
+	            String filePath = folder.getAbsolutePath() + File.separator + entry.getName();
+	            if (!entry.isDirectory()) {
+	                extractFile(zipIn, filePath);
+	            } else {
+	                File dir = new File(filePath);
+	                dir.mkdir();
+	            }
+	            zipIn.closeEntry();
+	            entry = zipIn.getNextEntry();
+	        }
+	        zipIn.close();
+	        new File(tmpfolder+sep+id+".zip").delete();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+        byte[] bytesIn = new byte[4096];
+        int read = 0;
+        while ((read = zipIn.read(bytesIn)) != -1) {
+            bos.write(bytesIn, 0, read);
+        }
+        bos.close();
+    }
 	
 	private static void add(Modpack ...modpack)
 	{
