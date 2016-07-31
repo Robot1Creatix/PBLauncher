@@ -18,8 +18,8 @@ public class Core {
 			if(args[i].equals("only-console"))
 				onlyconsole = true;
 		}
-		Config.initConfig();
 		Logger.initLogFile();
+		Config.initConfig();
 		Modpack.initModpacks();
 		BronzeLauncher.start(debug, onlyconsole);
 		

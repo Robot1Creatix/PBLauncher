@@ -22,7 +22,7 @@ public class Logger {
 		try{
 			if(!logDir.exists())
 				logDir.mkdirs();
-			logFile = new File(logDir.getAbsolutePath()+sep+MiscUtils.getTime()+".log");
+			logFile = new File(logDir.getAbsolutePath()+sep+MiscUtils.getDataCode()+".log");
 			if(logFile.exists())
 				logFile.delete();
 			logFile.createNewFile();
@@ -37,7 +37,7 @@ public class Logger {
 		{
 			try {
 				FileWriter logW = new FileWriter(logFile);
-				logW.append(o.toString()+ln);
+				logW.append("["+MiscUtils.getTime()+"]"+o.toString()+ln);
 				logW.close();
 			} catch (Exception e) {
 				e.printStackTrace(Core.log);
