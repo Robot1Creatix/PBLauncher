@@ -8,15 +8,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
-
 import com.creatix.projectbronze.launcher.core.Core;
 import com.creatix.projectbronze.launcher.core.SystemProperty;
+import com.creatix.projectbronze.launcher.utils.FileUtils;
 
 public class Config {
 	
 	public static char sep = File.separatorChar;
 	private static File configDir = new File(Core.getSystemProperty(SystemProperty.UHOME)+sep+"ProjectBronze");
-	private static File configFile = new File(Core.getSystemProperty(SystemProperty.UHOME)+sep+"ProjectBronze"+sep+"config.pbconfig");
+	private static File configFile = new File(configDir, "config.pbconfig");
 	private static Properties prop = new Properties();
 	
 	public static int MinRam, MaxRam;
@@ -31,10 +31,7 @@ public class Config {
 	private static void createConfig()
 	{
 		try{
-			if(!configDir.exists())
-				configDir.mkdirs();
-			if(!configFile.exists())
-				configFile.createNewFile();
+			FileUtils.initFile(configFile);
 			genConfig();
 		}
 		catch(IOException e)
@@ -69,7 +66,7 @@ public class Config {
 			outs = new FileOutputStream(configFile);
 			prop.setProperty("MinRam", "1024");
 			prop.setProperty("MaxRam", "2048");
-			prop.setProperty("MinecraftFolder", System.getProperty("user.home")+sep+"ProjectBronze"+sep+"Minecraft");
+			prop.setProperty("MinecraftFolder", new File(configDir, "Minecraft").getAbsolutePath());
 			prop.store(outs, "BronzeLauncher Config");
 		}
 		catch(Exception e)
