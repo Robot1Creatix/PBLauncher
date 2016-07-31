@@ -185,7 +185,6 @@ public class Modpack {
 		{
 			src = src.substring(7);
 		}
-		System.out.println(src);
 		if(!src.substring(0, src.length() - 1).endsWith("</html>"))
 		{
 			if(addPrefix){
@@ -193,7 +192,6 @@ public class Modpack {
 			}
 			src += "</html>";
 			src = src.replaceAll("\n", "<br>");
-			System.out.println(src);
 		}
 		return src;
 	}
