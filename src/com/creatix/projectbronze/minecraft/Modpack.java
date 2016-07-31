@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import com.creatix.projectbronze.launcher.config.Config;
 import com.creatix.projectbronze.launcher.core.Core;
 import com.creatix.projectbronze.launcher.core.SystemProperty;
+import com.creatix.projectbronze.launcher.utils.FileUtils;
 
 public class Modpack {
 	public static final List<Modpack> modpacks = new ArrayList<Modpack>();
@@ -28,6 +29,7 @@ public class Modpack {
 	public URL url;
 	public File folder;
 	public Icon logo;
+	public String description;
 	private static String tmpfolder = Core.getSystemProperty(SystemProperty.UHOME) + sep + "ProjectBronze" + sep + "Temp";
 	public Modpack(String id, String name, String version,String mcversion ,String url)
 	{
@@ -45,6 +47,7 @@ public class Modpack {
 		this.folder = new File(Config.mcDir+Config.sep+id);
 		this.createfolder();
 		this.createIcon();
+		this.createDescription();
 	}
 	public static void createfolder(Modpack modpack)
 	{
@@ -157,6 +160,42 @@ public class Modpack {
 		{
 			Core.log.println("Unable to read icon for modpack " + name + ". Did modpack folder contain icon.png file?");
 		}
+	}
+	
+	private void createDescription()
+	{
+		try
+		{
+			description = readHtml(new File(folder, "desc.txt"), false);
+		}
+		catch (IOException e)
+		{
+			Core.log.println("Unable to read description for modpack " + name + ". Did modpack forlder containt desc.txt file");
+		}
+	}
+	
+	public static String readHtml(File file, boolean addPrefix) throws IOException
+	{
+		String src = FileUtils.readFile(file);
+		if(src.startsWith("<!DOCTYPE html>"))
+		{
+			src = src.substring(16);
+		}
+		if(src.startsWith("<html>") && !addPrefix)
+		{
+			src = src.substring(7);
+		}
+		System.out.println(src);
+		if(!src.substring(0, src.length() - 1).endsWith("</html>"))
+		{
+			if(addPrefix){
+				src = "<html>" + src;
+			}
+			src += "</html>";
+			src = src.replaceAll("\n", "<br>");
+			System.out.println(src);
+		}
+		return src;
 	}
 	
 	private static void add(Modpack ...modpack)
