@@ -22,6 +22,7 @@ public class Core {
 		}
 		coreDir = new File(getSystemProperty(SystemProperty.UHOME) + File.separatorChar + "ProjectBronze");
 		Logger.initLogFile();
+		log.debug(initializeSystem(), Core.class);
 		Config.initConfig();
 		Modpack.initModpacks();
 		BronzeLauncher.start(debug, onlyconsole);

@@ -166,7 +166,7 @@ public class Modpack {
 	{
 		try
 		{
-			description = readHtml(new File(folder, "desc.txt"), true);
+			description = readHtml(new File(folder, "desc.txt"), true, false);
 		}
 		catch (IOException e)
 		{
@@ -174,10 +174,10 @@ public class Modpack {
 		}
 	}
 	
-	public static String readHtml(File file, boolean addPrefix) throws IOException
+	public static String readHtml(File file, boolean addPrefix, boolean addDoctype) throws IOException
 	{
 		String src = FileUtils.readFile(file);
-		if(src.startsWith("<!DOCTYPE html>") && !addPrefix)
+		if(src.startsWith("<!DOCTYPE html>") && !addDoctype)
 		{
 			src = src.substring(16);
 		}
@@ -187,8 +187,13 @@ public class Modpack {
 		}
 		if(!src.substring(0, src.length() - 1).endsWith("</html>"))
 		{
-			if(addPrefix){
-				src = "<!DOCTYPE html><html>" + src;
+			if(addPrefix)
+			{
+				src = "<html>" + src;
+			}
+			if(addDoctype)
+			{
+				src = "<!DOCTYPE html>" + src;
 			}
 			src += "</html>";
 			src = src.replaceAll("\n", "<br>");

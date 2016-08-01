@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,8 +23,8 @@ import com.creatix.projectbronze.minecraft.Modpack;
 public class MainPanel extends PanelBase
 {
 	private JLabel icon = new JLabel(), name = new JLabel(), version = new JLabel(), mcversion = new JLabel(), desc = new JLabel();
-	private static BufferedImage back, playimg;
-	JButton play;
+	private static BufferedImage back, playimg, openimg;
+	JButton play, openfolder;
 	public MainPanel(MainFrame instance)
 	{
 		loadImages();
@@ -46,7 +47,8 @@ public class MainPanel extends PanelBase
 			}
 		});
 		play = new JButton(new ImageIcon(playimg));
-		play.setPreferredSize(new Dimension(150, 40));
+		//Нужна текстурка
+		//openfolder = new JButton(new ImageIcon(openimg));
 		setLayout(null);
 		add(modpacks);
 		add(desc);
@@ -55,24 +57,33 @@ public class MainPanel extends PanelBase
 		add(name);
 		add(play);
 		add(version);
-		/*try
+		try
 		{
-			name.setFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/font.ttf")));
+			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/font.ttf")));
+			Font f = new Font("Minecraft Evenings", Font.PLAIN, 25);
+			name.setFont(f);
+			version.setFont(f);
+			mcversion.setFont(f);
+			desc.setFont(f);
 		}
 		catch (FontFormatException | IOException e1)
 		{
 			Core.log.error("Unable to create font");
 			e1.printStackTrace(Core.log);
-		}*/
+		}
 		Insets i = getInsets();
 		modpacks.setBounds(0, 0, 200, 50);
 		icon.setBounds(721, 44, 126, 126);
 		icon.setBackground(new Color(255, 255, 255));
-		name.setBounds(702, 220, 190, 20);
-		version.setBounds(702, 240, 190, 20);
-		mcversion.setBounds(702, 260, 190, 20);
-		desc.setBounds(702, 280, 190, 320);
+		name.setBounds(670, 220, 240, 40);
+		version.setBounds(670, 260, 240, 40);
+		mcversion.setBounds(670, 300, 240, 40);
+		desc.setBounds(670, 340, 240, 320);
+		name.setVerticalAlignment(SwingConstants.TOP);
+		version.setVerticalAlignment(SwingConstants.TOP);
+		mcversion.setVerticalAlignment(SwingConstants.TOP);
 		desc.setVerticalAlignment(SwingConstants.TOP);
+		play.setBounds(709, 500, 150, 40);
 	}
 	
 	private void setModpakc(Modpack m)
