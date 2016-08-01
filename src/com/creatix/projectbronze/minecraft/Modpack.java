@@ -30,7 +30,6 @@ public class Modpack {
 	public File folder;
 	public Icon logo;
 	public String description;
-	private static String tmpfolder = Core.getSystemProperty(SystemProperty.UHOME) + sep + "ProjectBronze" + sep + "Temp";
 	public Modpack(String id, String name, String version,String mcversion ,String url)
 	{
 		this.id = id;
@@ -42,113 +41,41 @@ public class Modpack {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		if(!new File(tmpfolder).exists())
-			new File(tmpfolder).mkdirs();
+		if(!new File(Core.tmpfolder).exists())
+			new File(Core.tmpfolder).mkdirs();
 		this.folder = new File(Config.mcDir+Config.sep+id);
 		this.createfolder();
-		this.createIcon();
+		/*try
+		{
+			FileUtils.download(this.url, new File(Core.tmpfolder+sep+id+".zip"));
+		}
+		catch (IOException e)
+		{
+			Core.log.error("Unable to dowload mopack");
+			e.printStackTrace(Core.log);
+		}
+		try
+		{
+			FileUtils.unzip(folder, new File(Core.tmpfolder+sep+id+".zip"));
+		}
+		catch (IOException e)
+		{
+			Core.log.error("unable to dowload modpack");
+			e.printStackTrace(Core.log);
+		}
+*/		this.createIcon();
 		this.createDescription();
 	}
 	public static void createfolder(Modpack modpack)
 	{
-		try {
 			if(!modpack.folder.exists())
-				modpack.folder.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+				modpack.folder.mkdir();
 	}
 	public void createfolder()
 	{
 		if(!this.folder.exists())
 			this.folder.mkdirs();
 	}
-	public static void download(Modpack modpack)
-	{
-		try{
-			 InputStream in = new BufferedInputStream(modpack.url.openStream());
-			 ByteArrayOutputStream out = new ByteArrayOutputStream();
-			 byte[] buf = new byte[1024];
-			 int n = 0;
-			 while ((n=in.read(buf)) != -1)
-			 {
-			    out.write(buf, 0, n);
-			 }
-			 out.close();
-			 in.close();
-			 byte[] response = out.toByteArray();
-			 FileOutputStream fos = new FileOutputStream(tmpfolder+sep+modpack.id+".zip");
-			 fos.write(response);
-			 fos.close();
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	public  void download()
-	{
-		if(new File(tmpfolder+sep+id+".zip").exists())
-			new File(tmpfolder+sep+id+".zip").delete();
-		try{
-			 InputStream in = new BufferedInputStream(url.openStream());
-			 ByteArrayOutputStream out = new ByteArrayOutputStream();
-			 byte[] buf = new byte[1024];
-			 int n = 0;
-			 while ((n=in.read(buf)) != -1)
-			 {
-			    out.write(buf, 0, n);
-			 }
-			 out.close();
-			 in.close();
-			 byte[] response = out.toByteArray();
-			 FileOutputStream fos = new FileOutputStream(tmpfolder+sep+id+".zip");
-			 fos.write(response);
-			 fos.close();
-			 unzip();
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	public void unzip(){
-		try{
-			File destDir = folder;
-	        if (!destDir.exists()) {
-	            destDir.mkdirs();
-	        }
-	        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(tmpfolder+sep+id+".zip"));
-	        ZipEntry entry = zipIn.getNextEntry();
-	        while (entry != null) {
-	            String filePath = folder.getAbsolutePath() + File.separator + entry.getName();
-	            if (!entry.isDirectory()) {
-	                extractFile(zipIn, filePath);
-	            } else {
-	                File dir = new File(filePath);
-	                dir.mkdir();
-	            }
-	            zipIn.closeEntry();
-	            entry = zipIn.getNextEntry();
-	        }
-	        zipIn.close();
-	        new File(tmpfolder+sep+id+".zip").delete();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
-        byte[] bytesIn = new byte[4096];
-        int read = 0;
-        while ((read = zipIn.read(bytesIn)) != -1) {
-            bos.write(bytesIn, 0, read);
-        }
-        bos.close();
-    }
 	
 	private void createIcon()
 	{
@@ -210,6 +137,7 @@ public class Modpack {
 	}
 	public static void initModpacks()
 	{
+		ModpackChecker.getModpackList();
 		add(circle, wom, tfg);
 	}
 	public static final Modpack circle = new Modpack("circle", "Circle", "...", "1.7.10", "http://localhost/circle.zip");

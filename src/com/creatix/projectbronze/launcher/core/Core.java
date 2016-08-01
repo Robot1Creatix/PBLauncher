@@ -10,6 +10,7 @@ public class Core {
 	public static boolean debug, onlyconsole;
 	public static boolean root;
 	public static File coreDir;
+	public static String tmpfolder;
 	public static final LogStream log = new LogStream();
 	public static void main(String[] args)
 	{
@@ -21,6 +22,7 @@ public class Core {
 				onlyconsole = true;
 		}
 		coreDir = new File(getSystemProperty(SystemProperty.UHOME) + File.separatorChar + "ProjectBronze");
+		tmpfolder = Core.getSystemProperty(SystemProperty.UHOME) + File.separatorChar + "ProjectBronze" + File.separatorChar + "Temp";
 		Logger.initLogFile();
 		log.debug(initializeSystem(), Core.class);
 		Config.initConfig();

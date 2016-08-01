@@ -1,14 +1,21 @@
 package com.creatix.projectbronze.launcher.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import com.creatix.projectbronze.launcher.core.Core;
 
 public class FileUtils
@@ -163,4 +170,57 @@ public class FileUtils
 		}
 		return ret;
 	}
+	
+	public static void download(URL url, File dest) throws IOException
+	{
+		if(dest.exists())
+			dest.delete();
+		InputStream in = new BufferedInputStream(url.openStream());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		byte[] buf = new byte[1024];
+		int n = 0;
+		while ((n = in.read(buf)) != -1)
+		{
+			out.write(buf, 0, n);
+		}
+		out.close();
+		in.close();
+		initFile(dest);
+		FileOutputStream fos = new FileOutputStream(dest);
+		fos.write(out.toByteArray());
+		fos.close();
+	}
+	
+	public static void unzip(File destDir, File archive) throws IOException
+	{	
+	        if (!destDir.exists()) {
+	            destDir.mkdirs();
+	        }
+	        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(archive));
+	        ZipEntry entry = zipIn.getNextEntry();
+	        while (entry != null) {
+	            String filePath = destDir.getAbsolutePath() + File.separator + entry.getName();
+	            if (!entry.isDirectory()) {
+	                extractFile(zipIn, filePath);
+	            } else {
+	                File dir = new File(filePath);
+	                dir.mkdir();
+	            }
+	            zipIn.closeEntry();
+	            entry = zipIn.getNextEntry();
+	        }
+	        zipIn.close();
+	        archive.delete();
+	}
+	
+	private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+        byte[] bytesIn = new byte[4096];
+        int read = 0;
+        while ((read = zipIn.read(bytesIn)) != -1) {
+            bos.write(bytesIn, 0, read);
+        }
+        bos.close();
+    }
+	
 }
