@@ -52,6 +52,15 @@ public class FileUtils
 		}
 	}
 	
+	public static void recreateFile(File file) throws IOException
+	{
+		if(file.exists())
+		{
+			file.delete();
+		}
+		initFile(file);
+	}
+	
 	/**
 	 * Copy content of one file int another, files must exist, use {@link #initFile(File)}
 	 * @param to
@@ -97,7 +106,7 @@ public class FileUtils
 		writer.write(line);
 		if(breakLine)
 		{
-			writer.write('\n');
+			writer.newLine();
 		}
 		writer.close();
 	}

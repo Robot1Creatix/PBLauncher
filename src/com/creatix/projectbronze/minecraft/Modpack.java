@@ -158,7 +158,7 @@ public class Modpack {
 		}
 		catch (IOException e)
 		{
-			Core.log.println("Unable to read icon for modpack " + name + ". Did modpack folder contain icon.png file?");
+			Core.log.warning("Unable to read icon for modpack " + name + ". Did modpack folder contain icon.png file?");
 		}
 	}
 	
@@ -170,7 +170,7 @@ public class Modpack {
 		}
 		catch (IOException e)
 		{
-			Core.log.println("Unable to read description for modpack " + name + ". Did modpack forlder containt desc.txt file");
+			Core.log.warning("Unable to read description for modpack " + name + ". Did modpack forlder containt desc.txt file");
 		}
 	}
 	

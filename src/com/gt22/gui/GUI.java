@@ -15,7 +15,7 @@ public class GUI
 		}
 		catch (Exception e)
 		{
-			Core.log.println("Unable set system look and feel, something went realy wrong.");
+			Core.log.error("Unable set system look and feel, something went realy wrong.");
 			e.printStackTrace();
 		}
 		SwingUtilities.invokeLater(new Runnable()

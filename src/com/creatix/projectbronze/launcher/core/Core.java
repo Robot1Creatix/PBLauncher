@@ -18,6 +18,7 @@ public class Core {
 			if(args[i].equals("only-console"))
 				onlyconsole = true;
 		}
+		new Exception("test").printStackTrace(log);
 		Logger.initLogFile();
 		Config.initConfig();
 		Modpack.initModpacks();
