@@ -54,10 +54,10 @@ public class MainPanel extends PanelBase
 		else
 		{
 			icon.setIcon(m.logo);
-			name.setText("Name: " + m.name);
-			version.setText("Version: " + m.version);
-			mcversion.setText("Minecraft version: " + m.mcversion);
-			desc.setText("<html>Description:<br><br>" + m.description);
+			name.setText("Name: " + ((m.name == null) ? "" : m.name));
+			version.setText("Version: " + ((m.version == null) ? "" : m.version));
+			mcversion.setText("Minecraft version: " + ((m.mcversion == null) ? "" : m.mcversion));
+			desc.setText("<html>Description:<br><br>" + ((m.description == null) ? "" : m.description));
 		}
 	}
 	
