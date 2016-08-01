@@ -166,7 +166,7 @@ public class Modpack {
 	{
 		try
 		{
-			description = readHtml(new File(folder, "desc.txt"), false);
+			description = readHtml(new File(folder, "desc.txt"), true);
 		}
 		catch (IOException e)
 		{

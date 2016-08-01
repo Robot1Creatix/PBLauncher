@@ -1,5 +1,6 @@
 package com.creatix.projectbronze.launcher.core;
 
+import java.io.File;
 import com.creatix.projectbronze.launcher.config.Config;
 import com.creatix.projectbronze.launcher.log.LogStream;
 import com.creatix.projectbronze.launcher.log.Logger;
@@ -8,6 +9,7 @@ import com.creatix.projectbronze.minecraft.Modpack;
 public class Core {	
 	public static boolean debug, onlyconsole;
 	public static boolean root;
+	public static File coreDir;
 	public static final LogStream log = new LogStream();
 	public static void main(String[] args)
 	{
@@ -18,7 +20,7 @@ public class Core {
 			if(args[i].equals("only-console"))
 				onlyconsole = true;
 		}
-		new Exception("test").printStackTrace(log);
+		coreDir = new File(getSystemProperty(SystemProperty.UHOME) + File.separatorChar + "ProjectBronze");
 		Logger.initLogFile();
 		Config.initConfig();
 		Modpack.initModpacks();

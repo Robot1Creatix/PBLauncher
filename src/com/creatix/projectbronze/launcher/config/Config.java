@@ -15,8 +15,7 @@ import com.creatix.projectbronze.launcher.utils.FileUtils;
 public class Config {
 	
 	public static char sep = File.separatorChar;
-	private static File configDir = new File(Core.getSystemProperty(SystemProperty.UHOME)+sep+"ProjectBronze");
-	private static File configFile = new File(configDir, "config.pbconfig");
+	private static File configFile = new File(Core.coreDir, "config.pbconfig");
 	private static Properties prop = new Properties();
 	
 	public static int MinRam, MaxRam;
@@ -66,7 +65,7 @@ public class Config {
 			outs = new FileOutputStream(configFile);
 			prop.setProperty("MinRam", "1024");
 			prop.setProperty("MaxRam", "2048");
-			prop.setProperty("MinecraftFolder", new File(configDir, "Minecraft").getAbsolutePath());
+			prop.setProperty("MinecraftFolder", new File(Core.coreDir, "Minecraft").getAbsolutePath());
 			prop.store(outs, "BronzeLauncher Config");
 		}
 		catch(Exception e)
