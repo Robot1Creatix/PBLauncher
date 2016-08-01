@@ -28,7 +28,7 @@ public class Logger {
 			logFile.createNewFile();
 		}
 		catch(Exception e){
-			e.printStackTrace(Core.log);
+			e.printStackTrace();
 		}
 	}
 	public static void put(Object ...objects)
@@ -40,7 +40,7 @@ public class Logger {
 				logW.append("["+MiscUtils.getTime()+"]"+o.toString()+ln);
 				logW.close();
 			} catch (Exception e) {
-				e.printStackTrace(Core.log);
+				e.printStackTrace();
 			}
 		}
 	}
