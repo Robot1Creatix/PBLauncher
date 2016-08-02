@@ -26,7 +26,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import com.creatix.projectbronze.launcher.core.Core;
 import com.creatix.projectbronze.minecraft.MinecraftLauncher;
 import com.creatix.projectbronze.minecraft.Modpack;
-import com.creatix.projectbronze.minecraft.ModpackChecker;
+import com.creatix.projectbronze.minecraft.DowloadManager;
 import com.gt22.gui.component.ModpackList;
 import com.gt22.gui.frame.MainFrame;
 import com.gt22.gui.render.ModpackRenderer;
@@ -109,8 +109,8 @@ public class MainPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				ModpackChecker.downloadModpack(modpacks.getSelectedValue());
-				MinecraftLauncher.runMinecraft();
+				DowloadManager.downloadModpack(modpacks.getSelectedValue());
+				//MinecraftLauncher.runMinecraft();
 			}
 		});
 		update.addActionListener(new ActionListener()
@@ -118,7 +118,7 @@ public class MainPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				ModpackChecker.downloadModpack(modpacks.getSelectedValue());
+				DowloadManager.downloadModpack(modpacks.getSelectedValue());
 			}
 		});
 	}
@@ -158,7 +158,7 @@ public class MainPanel extends JPanel
 		{
 			icon.setIcon(m.logo);
 			name.setText(((m.name == null) ? "" : m.name));
-			version.setText(((m.version == null) ? "..." : (ModpackChecker.getDownloadedVersion(m) == null ? "..." : ModpackChecker.getDownloadedVersion(m)) + ":" + m.version));
+			version.setText(((m.version == null) ? "..." : (DowloadManager.getDownloadedVersion(m) == null ? "..." : DowloadManager.getDownloadedVersion(m)) + ":" + m.version));
 			mcversion.setText(((m.mcversion == null) ? "" : m.mcversion));
 			desc.setText(((m.description == null) ? "" : m.description));
 			play.setEnabled(true);

@@ -17,19 +17,24 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
 
-public class ModpackChecker
+public class DowloadManager
 {
 	private static File list = new File(Core.coreDir, "mp.list");
 	private static boolean dowloaded = false;
 
+	public static void dowloadNatives()
+	{
+		
+	}
+	
 	public static File getModpackList()
 	{
 		if (!dowloaded)
 		{
-			Core.log.debug("dowloading list", ModpackChecker.class);
+			Core.log.debug("dowloading list", DowloadManager.class);
 			if (list.exists())
 			{
-				Core.log.debug("deleting old list", ModpackChecker.class);
+				Core.log.debug("deleting old list", DowloadManager.class);
 				list.delete();
 			}
 			try
@@ -72,7 +77,7 @@ public class ModpackChecker
 
 	public static void downloadDefs()
 	{
-		Core.log.debug("downloadDefs", ModpackChecker.class);
+		Core.log.debug("downloadDefs", DowloadManager.class);
 		try
 		{
 			BufferedReader list = FileUtils.createReader(getModpackList());
