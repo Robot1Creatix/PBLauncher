@@ -17,7 +17,25 @@ public class Logger {
 	public static void initLogFile()
 	{
 		try{
-			FileUtils.recreateFile(logFile = new File(logDir, MiscUtils.getDataCode()+".log"));
+			logFile = new File(logDir, "PBLauncherLog-0-lasted.log");
+			File log3 = new File(logDir, "PBLauncherLog-3.log"), log2 = new File(logDir, "PBLauncherLog-2.log"), log1 = new File(logDir, "PBLauncherLog-1.log");
+			if(log3.exists())
+			{
+				log3.delete();
+			}
+			if(log2.exists())
+			{
+				log2.renameTo(log3);
+			}
+			if(log1.exists())
+			{
+				log1.renameTo(log2);
+			}
+			if(logFile.exists())
+			{
+				logFile.renameTo(log1);
+			}
+			FileUtils.initFile(logFile);
 		}
 		catch(IOException e){
 			e.printStackTrace();
