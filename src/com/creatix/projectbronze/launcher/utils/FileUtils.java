@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -222,5 +223,10 @@ public class FileUtils
         }
         bos.close();
     }
+
+	public static void download(String url, File dest) throws IOException
+	{
+		download(new URL(url), dest);
+	}
 	
 }

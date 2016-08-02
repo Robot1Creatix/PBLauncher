@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import com.creatix.projectbronze.launcher.core.Core;
+import com.gt22.gui.frame.MainFrame;
 
 public class GUI
 {

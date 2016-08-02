@@ -75,4 +75,29 @@ public class LogStream extends PrintStream
 		println(time() + fatal + s);
 	}
 	
+	public void info(Object s)
+	{
+		info(s.toString());
+	}
+	
+	public void debug(Object s, Class<?> sender)
+	{
+		debug(s.toString(), sender);
+	}
+	
+	public void warning(Object s)
+	{
+		warning(s.toString());
+	}
+	
+	public void error(Object s)
+	{
+		error(s.toString());
+	}
+	
+	public void fatal(Object s)
+	{
+		fatal(s.toString());
+	}
+	
 }

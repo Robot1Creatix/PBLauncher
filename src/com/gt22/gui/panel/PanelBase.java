@@ -1,4 +1,4 @@
-package com.gt22.gui;
+package com.gt22.gui.panel;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;

@@ -1,10 +1,13 @@
 package com.creatix.projectbronze.launcher.core;
 
 import java.io.File;
+import java.io.IOException;
 import com.creatix.projectbronze.launcher.config.Config;
 import com.creatix.projectbronze.launcher.log.LogStream;
 import com.creatix.projectbronze.launcher.log.Logger;
+import com.creatix.projectbronze.launcher.utils.FileUtils;
 import com.creatix.projectbronze.minecraft.Modpack;
+import com.creatix.projectbronze.minecraft.ModpackChecker;
 
 public class Core {	
 	public static boolean debug, onlyconsole;
@@ -25,7 +28,16 @@ public class Core {
 		tmpfolder = Core.getSystemProperty(SystemProperty.UHOME) + File.separatorChar + "ProjectBronze" + File.separatorChar + "Temp";
 		Logger.initLogFile();
 		log.debug(initializeSystem(), Core.class);
+		try
+		{
+			FileUtils.download("http://projectbronze.comli.com/launcher/git.t", new File(coreDir, "t.txt"));
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		Config.initConfig();
+		ModpackChecker.downloadDefs();
 		Modpack.initModpacks();
 		BronzeLauncher.start(debug, onlyconsole);
 		
