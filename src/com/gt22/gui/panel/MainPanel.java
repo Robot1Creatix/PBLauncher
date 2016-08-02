@@ -40,17 +40,17 @@ public class MainPanel extends JPanel
 	JButton play, openfolder, update;
 	public MainPanel(MainFrame instance)
 	{
-		loadImages();
-		initFont();
 		initComponents();
-		initListners();
 		//Fast way to init text on components
 		setModpakc(null);
 	}
 	
 	private void initComponents()
 	{
+		loadImages();
+		initFont();
 		addElements();
+		initListners();
 		initBoudns();
 		initMisc();
 	}
