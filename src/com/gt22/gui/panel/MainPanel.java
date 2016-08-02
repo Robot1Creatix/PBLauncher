@@ -34,7 +34,7 @@ public class MainPanel extends JPanel
 {
 	private JLabel icon = new JLabel(), name = new JLabel(), version = new JLabel(), mcversion = new JLabel(), desc = new JLabel();
 	private static BufferedImage back, playimg, openimg;
-	JList<Modpack> modpacks;
+	ModpackList modpacks;
 	JScrollPane modpackselector;
 	JButton play, openfolder, update;
 	public MainPanel(MainFrame instance)
@@ -49,41 +49,45 @@ public class MainPanel extends JPanel
 	
 	private void initComponents()
 	{
-		/*JComboBox<String> modpacks = new JComboBox<String>(createModpacksArray());
-		modpacks.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				setModpakc(getModpackByName((String) modpacks.getSelectedItem()));
-			}
-		});*/
-		play = new JButton(new ImageIcon(playimg));
+		addElements();
+		initBoudns();
+		initMisc();
+	}
+	
+	private void addElements()
+	{
 		setLayout(null);
 		add(modpackselector = new JScrollPane(modpacks = new ModpackList()));
 		add(desc);
 		add(icon);
 		add(mcversion);
 		add(name);
-		add(play);
+		add(play = new JButton(new ImageIcon(playimg)));
 		add(version);
 		//Нужны текстурки
 		add(openfolder = new JButton("Open folder"));
 		add(update = new JButton("Update"));
-		modpacks.setCellRenderer(new ModpackRenderer());
-		modpackselector.setBounds(0, 0, 418, 500);
+	}
+	
+	private void initMisc()
+	{
+		name.setVerticalAlignment(SwingConstants.TOP);
+		version.setVerticalAlignment(SwingConstants.TOP);
+		mcversion.setVerticalAlignment(SwingConstants.TOP);
+		desc.setVerticalAlignment(SwingConstants.TOP);
 		modpackselector.getVerticalScrollBar().setUI(new BasicScrollBarUI());
 		modpackselector.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		modpackselector.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+	}
+	
+	private void initBoudns()
+	{
 		icon.setBounds(671, 17, 213, 213);
 		name.setBounds(670, 260, 240, 30);
 		version.setBounds(670, 290, 240, 20);
 		mcversion.setBounds(670, 310, 240, 20);
 		desc.setBounds(670, 330, 240, 270);
-		name.setVerticalAlignment(SwingConstants.TOP);
-		version.setVerticalAlignment(SwingConstants.TOP);
-		mcversion.setVerticalAlignment(SwingConstants.TOP);
-		desc.setVerticalAlignment(SwingConstants.TOP);
+		modpackselector.setBounds(0, 0, 418, 500);
 		update.setBounds(160, 510, 150, 40);
 		openfolder.setBounds(320, 510, 150, 40);
 		play.setBounds(5, 510, 150, 40);
