@@ -10,7 +10,7 @@ import com.creatix.projectbronze.launcher.utils.FileUtils;
 import com.creatix.projectbronze.launcher.utils.MiscUtils;
 
 public class Logger {
-	public static final String ln = System.getProperty("line.separator");
+	public static final String ln = Core.getSystemProperty(SystemProperty.LINE);
 	public static final char sep = File.separatorChar;
 	private static File logFile;
 	private static File logDir = new File(Core.coreDir, "Logs");
