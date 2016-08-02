@@ -200,22 +200,31 @@ public class FileUtils
 	        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(archive));
 	        ZipEntry entry = zipIn.getNextEntry();
 	        while (entry != null) {
-	            String filePath = destDir.getAbsolutePath() + File.separator + entry.getName();
+	        	String name = entry.getName();
+	            String filePath = destDir.getAbsolutePath() + File.separator + name;
 	            if (!entry.isDirectory()) {
+	            	System.out.println("creating file " + name);
+	            	if(name.indexOf(File.separatorChar) != -1)
+	            	{
+	            		new File(destDir, name.substring(0, name.lastIndexOf(File.separatorChar))).mkdirs(); 		
+	            	}
 	                extractFile(zipIn, filePath);
 	            } else {
 	                File dir = new File(filePath);
-	                dir.mkdir();
+	                System.out.println("creating dir " + dir.getName());
+	                dir.mkdirs();
 	            }
 	            zipIn.closeEntry();
 	            entry = zipIn.getNextEntry();
 	        }
 	        zipIn.close();
-	        archive.delete();
+	        //archive.delete();
 	}
 	
 	private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+        File out = new File(filePath);
+        out.createNewFile();
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(out));
         byte[] bytesIn = new byte[4096];
         int read = 0;
         while ((read = zipIn.read(bytesIn)) != -1) {
@@ -227,6 +236,31 @@ public class FileUtils
 	public static void download(String url, File dest) throws IOException
 	{
 		download(new URL(url), dest);
+	}
+	
+	public static void deleteDir(File dir)
+	{
+		if(!dir.isDirectory())
+		{
+			throw new IllegalArgumentException("File must be a directory");
+		}
+		if(!dir.exists())
+		{
+			return;
+		}
+		File[] files = dir.listFiles();
+		for(File f : files)
+		{
+			if(f.isDirectory())
+			{
+				deleteDir(f);
+			}
+			else
+			{
+				f.delete();
+			}
+		}
+		dir.delete();
 	}
 	
 }

@@ -1,14 +1,13 @@
 package com.gt22.gui.panel;
 
-import java.awt.BorderLayout;
+import java.awt.AlphaComposite;
 import java.awt.Font;
-import java.awt.GridBagLayout;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import com.creatix.projectbronze.launcher.core.Core;
 import com.creatix.projectbronze.minecraft.Modpack;
 
 public class ModpackPanel extends PanelBase
@@ -26,23 +25,24 @@ public class ModpackPanel extends PanelBase
 	
 	private void initComponents()
 	{
-		logo.setIcon(m.logo);
-		logo.setBorder(BorderFactory.createEmptyBorder(17, 17, 17, 0));
+		
+		logo.setIcon(new ImageIcon(createResizedCopy(m.icon, 57, 57, false)));
+		logo.setBorder(BorderFactory.createEmptyBorder(6, 5, 7, 0));
 		name.setText(m.name);
-		ver.setText(m.version);
-		mcver.setText(m.mcversion);
-		name.setBorder(BorderFactory.createEmptyBorder(0, 170, 120, 0));
-		ver.setBorder(BorderFactory.createEmptyBorder(0, 170, 0, 0));
-		mcver.setBorder(BorderFactory.createEmptyBorder(130, 170, 0, 0));
+		//ver.setText(m.version + ":" + m.lastversion);
+		//mcver.setText(m.mcversion);
+		name.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 0));
+		//ver.setBorder(BorderFactory.createEmptyBorder(0, 170, 0, 0));
+		//mcver.setBorder(BorderFactory.createEmptyBorder(130, 170, 0, 0));
 		add(back, 0, 0);
 		add(logo, 0, 0);
 		add(name, 0, 0);
-		add(ver, 0, 0);
-		add(mcver, 0, 0);
-		setComponentZOrder(back, 4);
+		//add(ver, 0, 0);
+		//add(mcver, 0, 0);
+		setComponentZOrder(back, 2);
 		setComponentZOrder(name, 1);
-		setComponentZOrder(ver, 2);
-		setComponentZOrder(mcver, 3);	
+		//setComponentZOrder(ver, 2);
+		//setComponentZOrder(mcver, 3);	
 	}
 	
 	private void initFont()
@@ -52,4 +52,17 @@ public class ModpackPanel extends PanelBase
 		ver.setFont(f);
 		mcver.setFont(f);
 	}
+	
+	private static BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight, boolean preserveAlpha)
+    {
+    	int imageType = preserveAlpha ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+    	BufferedImage scaledBI = new BufferedImage(scaledWidth, scaledHeight, imageType);
+    	Graphics2D g = scaledBI.createGraphics();
+    	if (preserveAlpha) {
+    		g.setComposite(AlphaComposite.Src);
+    	}
+    	g.drawImage(originalImage, 0, 0, scaledWidth, scaledHeight, null); 
+    	g.dispose();
+    	return scaledBI;
+    }
 }

@@ -1,5 +1,6 @@
 package com.creatix.projectbronze.minecraft;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,6 +32,7 @@ public class Modpack {
 	//public URL url;
 	public File folder;
 	public Icon logo;
+	public BufferedImage icon;
 	public String description;
 	public Modpack(String id, String name, String version,String mcversion)
 	{
@@ -38,6 +40,7 @@ public class Modpack {
 		this.name = name;
 		this.mcversion = mcversion;
 		this.version = version;
+		//this.lastversion = lastversion;
 		/*try {
 			this.url = new URL(url);
 		} catch (MalformedURLException e) {
@@ -89,7 +92,8 @@ public class Modpack {
 	{
 		try
 		{
-			logo = new ImageIcon(ImageIO.read(new File(folder, "logo.png")));
+			icon = ImageIO.read(new File(folder, "logo.png"));
+			logo = new ImageIcon(icon);
 		}
 		catch (IOException e)
 		{
@@ -145,6 +149,7 @@ public class Modpack {
 	}
 	public static void initModpacks()
 	{
+		Core.log.debug("initModpacks", Modpack.class);
 		JsonObject[] modpacks = ModpackChecker.getModpackDefs();
 		for(JsonObject m : modpacks)
 		{
@@ -153,7 +158,7 @@ public class Modpack {
 		
 	}
 	//public static final Modpack circle = new Modpack("circle", "Circle", "...", "1.7.10", "http://localhost/circle.zip");
-	//public static final Modpack wom = new Modpack("wom", "World Of Magic", "1.0", "1.7.10", "http://localhost/wom.zip");
+	public static final Modpack wom = new Modpack("wom", "World Of Magic", "1.0", "1.7.10");
 	//public static final Modpack tfg = new Modpack("tfg", "TerraFirmaGreg", "...", "1.7.10", "http://localhost/tfg.zip");
 	public static Modpack[] getModpacks()
 	{

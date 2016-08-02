@@ -1,12 +1,8 @@
 package com.gt22.gui.frame;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import javax.swing.JFrame;
 import com.creatix.projectbronze.launcher.utils.Const;
-import com.gt22.gui.component.ModpackComponent;
 import com.gt22.gui.panel.MainPanel;
 
 public class MainFrame extends JFrame

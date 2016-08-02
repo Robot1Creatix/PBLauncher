@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import com.creatix.projectbronze.launcher.config.Config;
@@ -25,8 +26,10 @@ public class ModpackChecker
 	{
 		if (!dowloaded)
 		{
+			Core.log.debug("dowloading list", ModpackChecker.class);
 			if (list.exists())
 			{
+				Core.log.debug("deleting old list", ModpackChecker.class);
 				list.delete();
 			}
 			try
@@ -44,8 +47,32 @@ public class ModpackChecker
 		return list;
 	}
 
+	public static void downloadModpack(Modpack m)
+	{
+		Core.log.info("Dowloading modpack " + m.name);
+		try
+		{
+			URL pack = new URL("http://projectbronze.comli.com/launcher/mps/" + m.id + "/pack.zip");
+			File archive;
+			FileUtils.download(pack, archive = new File(Core.tmpfolder, m.id + "pack.zip"));
+			Core.log.info("Download");
+			File dest = new File(Config.mcDir, m.id + File.separator + "pack");
+			FileUtils.deleteDir(dest);
+			Core.log.info("Deleted old version");
+			dest.mkdirs();
+			FileUtils.unzip(dest, archive);
+			Core.log.info("Unzipping complete, dowload succes");
+		}
+		catch (IOException e)
+		{
+			Core.log.error("Unable to download modpack");
+			e.printStackTrace(Core.log);
+		}
+	}
+
 	public static void downloadDefs()
 	{
+		Core.log.debug("downloadDefs", ModpackChecker.class);
 		try
 		{
 			BufferedReader list = FileUtils.createReader(getModpackList());
@@ -97,12 +124,12 @@ public class ModpackChecker
 		try
 		{
 			BufferedReader list = FileUtils.createReader(getModpackList());
-			for(String tmp = list.readLine(); tmp != null; tmp = list.readLine())
+			for (String tmp = list.readLine(); tmp != null; tmp = list.readLine())
 			{
 				modpacks.add(tmp);
 			}
 			JsonObject[] ret = new JsonObject[modpacks.size()];
-			for(int i = 0; i < modpacks.size(); i++)
+			for (int i = 0; i < modpacks.size(); i++)
 			{
 				ret[i] = getModpackDef(new File(Config.mcDir, modpacks.get(i)));
 			}
@@ -113,7 +140,25 @@ public class ModpackChecker
 			Core.log.error("Unable to get modpacks defenitions");
 			e.printStackTrace(Core.log);
 		}
-		
+
 		return null;
+	}
+
+	public static String getDownloadedVersion(Modpack m)
+	{
+		String ret = null;
+		File ver = new File(new File(m.folder, "pack"), "ver.txt");
+		try
+		{
+			FileUtils.initFile(ver);
+			BufferedReader r = FileUtils.createReader(ver);
+			ret = r.readLine();
+		}
+		catch (IOException e)
+		{
+			Core.log.error("Unable to get version");
+			e.printStackTrace();
+		}
+		return ret;
 	}
 }
