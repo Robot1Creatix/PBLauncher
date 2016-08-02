@@ -7,7 +7,7 @@ import com.creatix.projectbronze.launcher.log.LogStream;
 import com.creatix.projectbronze.launcher.log.Logger;
 import com.creatix.projectbronze.launcher.utils.FileUtils;
 import com.creatix.projectbronze.minecraft.Modpack;
-import com.creatix.projectbronze.minecraft.ModpackChecker;
+import com.creatix.projectbronze.minecraft.DowloadManager;
 
 public class Core {	
 	public static boolean debug, onlyconsole;
@@ -29,7 +29,7 @@ public class Core {
 		Logger.initLogFile();
 		log.debug(initializeSystem(), Core.class);
 		Config.initConfig();
-		ModpackChecker.downloadDefs();
+		DowloadManager.downloadDefs();
 		Modpack.initModpacks();
 		BronzeLauncher.start(debug, onlyconsole);
 		
@@ -38,7 +38,7 @@ public class Core {
 	private static String initializeSystem()
 	{
 		String ret = "";
-		if(System.getProperty("os.name").toLowerCase().contains("windows"))//1
+		if(System.getProperty("os.name").toLowerCase().contains("windows"))//0
 		{
 			ret += "Windows::";
 		}
@@ -54,8 +54,8 @@ public class Core {
 		{
 			ret += "undefined::";
 		}
-		ret += System.getProperty("os.version")+"::";//2
-		if(System.getProperty("os.arch").toLowerCase().contains("i3"))//3
+		ret += System.getProperty("os.version")+"::";//1
+		if(System.getProperty("os.arch").toLowerCase().contains("i3"))//2
 		{
 			ret += "x32::";
 		}
@@ -67,10 +67,11 @@ public class Core {
 		{
 			ret += "undefined::";
 		}
-		ret += System.getProperty("java.version")+"::";//4
-		ret += System.getProperty("java.home")+"::";//5
-		ret += System.getProperty("user.name")+"::";//6
-		ret += System.getProperty("user.home");//7
+		ret += System.getProperty("java.version")+"::";//3
+		ret += System.getProperty("java.home")+"::";//4
+		ret += System.getProperty("user.name")+"::";//5
+		ret += System.getProperty("user.home");//6
+		ret += System.getProperty("line.separator");//7
 		return ret;
 	}
 	public static String getSystemProperty(SystemProperty prop)
