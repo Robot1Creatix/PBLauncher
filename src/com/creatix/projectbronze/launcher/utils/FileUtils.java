@@ -203,7 +203,6 @@ public class FileUtils
 	        	String name = entry.getName();
 	            String filePath = destDir.getAbsolutePath() + File.separator + name;
 	            if (!entry.isDirectory()) {
-	            	System.out.println("creating file " + name);
 	            	if(name.indexOf(File.separatorChar) != -1)
 	            	{
 	            		new File(destDir, name.substring(0, name.lastIndexOf(File.separatorChar))).mkdirs(); 		
@@ -211,7 +210,6 @@ public class FileUtils
 	                extractFile(zipIn, filePath);
 	            } else {
 	                File dir = new File(filePath);
-	                System.out.println("creating dir " + dir.getName());
 	                dir.mkdirs();
 	            }
 	            zipIn.closeEntry();
