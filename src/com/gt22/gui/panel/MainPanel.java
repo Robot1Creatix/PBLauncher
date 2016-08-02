@@ -5,31 +5,22 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import com.creatix.projectbronze.launcher.core.Core;
-import com.creatix.projectbronze.minecraft.MinecraftLauncher;
-import com.creatix.projectbronze.minecraft.Modpack;
 import com.creatix.projectbronze.minecraft.DowloadManager;
+import com.creatix.projectbronze.minecraft.Modpack;
 import com.gt22.gui.component.ModpackList;
 import com.gt22.gui.frame.MainFrame;
-import com.gt22.gui.render.ModpackRenderer;
 
 public class MainPanel extends JPanel
 {
@@ -96,31 +87,17 @@ public class MainPanel extends JPanel
 	
 	private void initListners()
 	{
-		modpacks.addListSelectionListener(new ListSelectionListener()
-		{
-			@Override
-			public void valueChanged(ListSelectionEvent e)
-			{
-				setModpakc(modpacks.getSelectedValue());
-			}
+		modpacks.addListSelectionListener((e) -> setModpakc(modpacks.getSelectedValue()));
+		update.addActionListener((e) -> dowloadPack());
+		play.addActionListener((e) -> {
+			dowloadPack();
+			//MinecraftLauncher.runMinecraft();
 		});
-		play.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				DowloadManager.downloadModpack(modpacks.getSelectedValue());
-				//MinecraftLauncher.runMinecraft();
-			}
-		});
-		update.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				DowloadManager.downloadModpack(modpacks.getSelectedValue());
-			}
-		});
+	}
+	
+	private void dowloadPack()
+	{
+		DowloadManager.downloadModpack(modpacks.getSelectedValue());
 	}
 	
 	private void initFont()

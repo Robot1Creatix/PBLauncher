@@ -6,6 +6,7 @@ import com.creatix.projectbronze.launcher.config.Config;
 import com.creatix.projectbronze.launcher.log.LogStream;
 import com.creatix.projectbronze.launcher.log.Logger;
 import com.creatix.projectbronze.launcher.utils.FileUtils;
+import com.creatix.projectbronze.launcher.utils.JavaVersion;
 import com.creatix.projectbronze.minecraft.Modpack;
 import com.creatix.projectbronze.minecraft.DowloadManager;
 
@@ -80,6 +81,10 @@ public class Core {
 		return props[prop.toInt()];
 	}
 
+	public static boolean isValidJava()
+	{
+		return !JavaVersion.createJavaVersion(getSystemProperty(SystemProperty.JVERSION)).isOlder("1.8");
+	}
 
 	public static boolean isWindows()
 	{

@@ -5,9 +5,12 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import com.creatix.projectbronze.launcher.core.Core;
 import com.creatix.projectbronze.minecraft.Modpack;
 
 public class ModpackPanel extends PanelBase
@@ -15,10 +18,19 @@ public class ModpackPanel extends PanelBase
 	public static final int xsize = 655, ysize = 162;
 	JLabel back = new JLabel(), logo = new JLabel(), name = new JLabel(), ver = new JLabel(), mcver = new JLabel();
 	Modpack m;
-	public ModpackPanel(Image back, Modpack m)
+	public ModpackPanel(Modpack m, boolean selected)
 	{
 		this.m = m;
-		this.back.setIcon(new ImageIcon(back));
+		try
+		{
+			String filename = selected ? "mpback.png" : "mpbackSelected.png";
+			this.back.setIcon(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/" + filename))));
+		}
+		catch (IOException e)
+		{
+			Core.log.error("Unable to load backgound icon for modpacks");
+			e.printStackTrace(Core.log);
+		}
 		initFont();
 		initComponents();
 	}
