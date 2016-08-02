@@ -27,30 +27,20 @@ public class ModpackPanel extends PanelBase
 	{
 		
 		logo.setIcon(new ImageIcon(createResizedCopy(m.icon, 57, 57, false)));
-		logo.setBorder(BorderFactory.createEmptyBorder(6, 5, 7, 0));
 		name.setText(m.name);
-		//ver.setText(m.version + ":" + m.lastversion);
-		//mcver.setText(m.mcversion);
+		logo.setBorder(BorderFactory.createEmptyBorder(6, 5, 7, 0));
 		name.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 0));
-		//ver.setBorder(BorderFactory.createEmptyBorder(0, 170, 0, 0));
-		//mcver.setBorder(BorderFactory.createEmptyBorder(130, 170, 0, 0));
 		add(back, 0, 0);
 		add(logo, 0, 0);
 		add(name, 0, 0);
-		//add(ver, 0, 0);
-		//add(mcver, 0, 0);
 		setComponentZOrder(back, 2);
 		setComponentZOrder(name, 1);
-		//setComponentZOrder(ver, 2);
-		//setComponentZOrder(mcver, 3);	
 	}
 	
 	private void initFont()
 	{
 		Font f = new Font("Minecraft Evenings", Font.PLAIN, 25);
 		name.setFont(f);
-		ver.setFont(f);
-		mcver.setFont(f);
 	}
 	
 	public static BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight, boolean preserveAlpha)
