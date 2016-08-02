@@ -24,6 +24,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import com.creatix.projectbronze.launcher.core.Core;
+import com.creatix.projectbronze.minecraft.MinecraftLauncher;
 import com.creatix.projectbronze.minecraft.Modpack;
 import com.creatix.projectbronze.minecraft.ModpackChecker;
 import com.gt22.gui.component.ModpackList;
@@ -82,7 +83,7 @@ public class MainPanel extends JPanel
 	
 	private void initBoudns()
 	{
-		icon.setBounds(671, 17, 213, 213);
+		icon.setBounds(680, 34, 126, 126);
 		name.setBounds(670, 260, 240, 30);
 		version.setBounds(670, 290, 240, 20);
 		mcversion.setBounds(670, 310, 240, 20);
@@ -109,6 +110,7 @@ public class MainPanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				ModpackChecker.downloadModpack(modpacks.getSelectedValue());
+				MinecraftLauncher.runMinecraft();
 			}
 		});
 		update.addActionListener(new ActionListener()

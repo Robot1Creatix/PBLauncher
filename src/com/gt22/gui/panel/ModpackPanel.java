@@ -53,7 +53,7 @@ public class ModpackPanel extends PanelBase
 		mcver.setFont(f);
 	}
 	
-	private static BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight, boolean preserveAlpha)
+	public static BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight, boolean preserveAlpha)
     {
     	int imageType = preserveAlpha ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
     	BufferedImage scaledBI = new BufferedImage(scaledWidth, scaledHeight, imageType);
