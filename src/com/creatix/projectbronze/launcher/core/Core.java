@@ -70,7 +70,7 @@ public class Core {
 		ret += System.getProperty("java.version")+"::";//3
 		ret += System.getProperty("java.home")+"::";//4
 		ret += System.getProperty("user.name")+"::";//5
-		ret += System.getProperty("user.home");//6
+		ret += System.getProperty("user.home") + "::";//6
 		ret += System.getProperty("line.separator");//7
 		return ret;
 	}
