@@ -32,17 +32,6 @@ public class LogStream extends PrintStream
 	 */
 	@Deprecated
 	@Override
-	public void println(String x)
-	{
-		Logger.put(x, '\n');
-		super.println(x);
-	}
-	
-	/**
-	 * Sloud only be used by stacktraces or internaly
-	 */
-	@Deprecated
-	@Override
 	public void print(String s)
 	{
 		Logger.put(s);
