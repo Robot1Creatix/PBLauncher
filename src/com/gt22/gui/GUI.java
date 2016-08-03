@@ -18,7 +18,7 @@ public class GUI
 		catch (Exception e)
 		{
 			Core.log.error("Unable set system look and feel, something went realy wrong.");
-			e.printStackTrace();
+			e.printStackTrace(Core.log);
 		}
 		SwingUtilities.invokeLater(() -> {
 			if(Core.isValidJava())
