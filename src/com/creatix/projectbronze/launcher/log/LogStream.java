@@ -59,9 +59,13 @@ public class LogStream extends PrintStream
 		println(time() + error + s);
 	}
 	
-	public void fatal(String s)
+	public void fatal(String s, boolean kill, int exitcode)
 	{
 		println(time() + fatal + s);
+		if(kill)
+		{
+			System.exit(exitcode);
+		}
 	}
 	
 	public void info(Object s)
@@ -84,9 +88,9 @@ public class LogStream extends PrintStream
 		error(s.toString());
 	}
 	
-	public void fatal(Object s)
+	public void fatal(Object s, boolean kill, int exitcode)
 	{
-		fatal(s.toString());
+		fatal(s.toString(), kill, exitcode);
 	}
 	
 }
