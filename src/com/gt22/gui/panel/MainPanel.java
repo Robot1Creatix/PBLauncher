@@ -74,11 +74,11 @@ public class MainPanel extends JPanel
 	
 	private void initBoudns()
 	{
-		icon.setBounds(680, 34, 126, 126);
-		name.setBounds(670, 260, 240, 30);
-		version.setBounds(670, 290, 240, 20);
-		mcversion.setBounds(670, 310, 240, 20);
-		desc.setBounds(670, 330, 240, 270);
+		icon.setBounds(715, 57, 126, 126);
+		name.setBounds(665, 260, 240, 30);
+		version.setBounds(665, 290, 240, 20);
+		mcversion.setBounds(665, 310, 240, 20);
+		desc.setBounds(665, 330, 240, 265);
 		modpackselector.setBounds(0, 0, 418, 500);
 		update.setBounds(160, 510, 150, 40);
 		openfolder.setBounds(320, 510, 150, 40);
