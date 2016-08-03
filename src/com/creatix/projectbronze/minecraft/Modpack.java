@@ -149,7 +149,6 @@ public class Modpack {
 	}
 	public static void initModpacks()
 	{
-		Core.log.debug("initModpacks", Modpack.class);
 		JsonObject[] modpacks = DowloadManager.getModpackDefs();
 		for(JsonObject m : modpacks)
 		{

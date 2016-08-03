@@ -23,7 +23,6 @@ public class Config {
 	
 	public static void initConfig()
 	{
-		Core.log.debug("initCfg", Config.class);
 		if(!configFile.exists())
 			createConfig();
 		loadConfig();

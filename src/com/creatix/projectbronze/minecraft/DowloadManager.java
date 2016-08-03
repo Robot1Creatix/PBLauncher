@@ -31,10 +31,8 @@ public class DowloadManager
 	{
 		if (!dowloaded)
 		{
-			Core.log.debug("dowloading list", DowloadManager.class);
 			if (list.exists())
 			{
-				Core.log.debug("deleting old list", DowloadManager.class);
 				list.delete();
 			}
 			try
@@ -77,7 +75,6 @@ public class DowloadManager
 
 	public static void downloadDefs()
 	{
-		Core.log.debug("downloadDefs", DowloadManager.class);
 		try
 		{
 			BufferedReader list = FileUtils.createReader(getModpackList());
