@@ -118,7 +118,7 @@ public class DowloadManager
 		catch (Exception e)
 		{
 			Core.log.error("Unable to read modpack defenition for modpack " + m.name);
-			e.printStackTrace();
+			e.printStackTrace(Core.log);
 		}
 		return null;
 	}
@@ -162,7 +162,7 @@ public class DowloadManager
 		catch (IOException e)
 		{
 			Core.log.error("Unable to get version");
-			e.printStackTrace();
+			e.printStackTrace(Core.log);
 		}
 		return ret;
 	}
