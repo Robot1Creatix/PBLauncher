@@ -33,7 +33,7 @@ public class MainFrame extends JFrame
 		else
 		{
 			JOptionPane.showMessageDialog(this, "Java 8 is required to run the launcher", "Incompatble java", JOptionPane.PLAIN_MESSAGE);
-			Core.log.fatal("Dected java version lesser tha 1.8.0, launcher cannot work with this java version", true, 1);
+			Core.log.fatal("Dected java version lesser tha 1.8.0, launcher cannot work with this java version", true, Const.EXITCODE_INVALID_JAVA);
 		}
 	}
 }
