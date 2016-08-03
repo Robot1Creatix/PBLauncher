@@ -5,6 +5,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import com.creatix.projectbronze.launcher.core.Core;
 import com.gt22.gui.frame.MainFrame;
+import com.gt22.gui.panel.JavaErrorFrame;
 
 public class GUI
 {
@@ -19,13 +20,15 @@ public class GUI
 			Core.log.error("Unable set system look and feel, something went realy wrong.");
 			e.printStackTrace();
 		}
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
+		SwingUtilities.invokeLater(() -> {
+			if(Core.isValidJava())
 			{
 				new MainFrame();
 			}
-		});
+			else
+			{
+				new JavaErrorFrame();
+			}
+		});	
 	}
 }

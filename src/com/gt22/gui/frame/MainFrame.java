@@ -28,11 +28,6 @@ public class MainFrame extends JFrame
 
 	public MainFrame()
 	{
-		if(!Core.isValidJava())
-		{
-			new JavaErrorFrame();
-			return;
-		}
 		setSize(Const.startwidth, Const.startheight);
 		setTitle("Project bronze launcher");
 		setLayout(new BorderLayout());
