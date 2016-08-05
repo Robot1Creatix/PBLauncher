@@ -20,15 +20,20 @@ public class GUI
 			Core.log.error("Unable set system look and feel, something went realy wrong.");
 			e.printStackTrace(Core.log);
 		}
-		SwingUtilities.invokeLater(() -> {
-			if(Core.isValidJava())
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
 			{
-				new MainFrame();
+				if (Core.isValidJava())
+				{
+					new MainFrame();
+				}
+				else
+				{
+					new JavaErrorFrame();
+				}
 			}
-			else
-			{
-				new JavaErrorFrame();
-			}
-		});	
+		});
 	}
 }
