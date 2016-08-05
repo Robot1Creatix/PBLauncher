@@ -29,7 +29,6 @@ public class Modpack {
 	public static final List<Modpack> modpacks = new ArrayList<Modpack>();
 	public static final char sep = File.separatorChar;
 	public String id, name, version, mcversion;
-	//public URL url;
 	public File folder;
 	public Icon logo;
 	public BufferedImage icon;
@@ -40,35 +39,11 @@ public class Modpack {
 		this.name = name;
 		this.mcversion = mcversion;
 		this.version = version;
-		//this.lastversion = lastversion;
-		/*try {
-			this.url = new URL(url);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}*/
 		if(!new File(Core.tmpfolder).exists())
 			new File(Core.tmpfolder).mkdirs();
 		this.folder = new File(Config.mcDir+Config.sep+id);
 		this.createfolder();
-		/*try
-		{
-			FileUtils.download(this.url, new File(Core.tmpfolder+sep+id+".zip"));
-		}
-		catch (IOException e)
-		{
-			Core.log.error("Unable to dowload mopack");
-			e.printStackTrace(Core.log);
-		}
-		try
-		{
-			FileUtils.unzip(folder, new File(Core.tmpfolder+sep+id+".zip"));
-		}
-		catch (IOException e)
-		{
-			Core.log.error("unable to dowload modpack");
-			e.printStackTrace(Core.log);
-		}
-*/		this.createIcon();
+		this.createIcon();
 		this.createDescription();
 	}
 	
@@ -79,8 +54,7 @@ public class Modpack {
 	
 	public static void createfolder(Modpack modpack)
 	{
-			if(!modpack.folder.exists())
-				modpack.folder.mkdir();
+			modpack.createfolder();
 	}
 	public void createfolder()
 	{
