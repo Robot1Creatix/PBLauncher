@@ -13,8 +13,7 @@ import com.creatix.projectbronze.minecraft.DowloadManager;
 public class Core {	
 	public static boolean debug, onlyconsole;
 	public static boolean root;
-	public static File coreDir;
-	public static String tmpfolder;
+	public static File coreDir, tmpfolder;
 	public static final LogStream log = new LogStream();
 	public static void main(String[] args)
 	{
@@ -26,7 +25,7 @@ public class Core {
 				onlyconsole = true;
 		}
 		coreDir = new File(getSystemProperty(SystemProperty.UHOME) + File.separatorChar + "ProjectBronze");
-		tmpfolder = Core.getSystemProperty(SystemProperty.UHOME) + File.separatorChar + "ProjectBronze" + File.separatorChar + "Temp";
+		tmpfolder = new File(coreDir, "Temp");
 		Logger.initLogFile();
 		log.debug(initializeSystem(), Core.class);
 		Config.initConfig();
@@ -34,6 +33,19 @@ public class Core {
 		Modpack.initModpacks();
 		BronzeLauncher.start(debug, onlyconsole);
 		
+	}
+	
+	private static void initFolders()
+	{
+		try
+		{
+			FileUtils.initFile(coreDir);
+			FileUtils.initFile(tmpfolder);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	private static String initializeSystem()

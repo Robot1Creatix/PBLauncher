@@ -39,8 +39,6 @@ public class Modpack {
 		this.name = name;
 		this.mcversion = mcversion;
 		this.version = version;
-		if(!new File(Core.tmpfolder).exists())
-			new File(Core.tmpfolder).mkdirs();
 		this.folder = new File(Config.mcDir+Config.sep+id);
 		this.createfolder();
 		this.createIcon();
