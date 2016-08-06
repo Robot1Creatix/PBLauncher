@@ -26,6 +26,7 @@ public class Core
 			if (args[i].equals("only-console"))
 				onlyconsole = true;
 		}
+		initFolders();
 		Logger.initLogFile();
 		log.debug(initializeSystem(), Core.class);
 		Config.initConfig();

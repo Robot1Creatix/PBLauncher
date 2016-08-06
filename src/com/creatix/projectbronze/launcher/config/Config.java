@@ -16,7 +16,7 @@ public class Config
 {
 
 	public static char sep = File.separatorChar;
-	private static File configFile = new File(Core.coreDir, "config.pbconfig");
+	private static File configFile;
 	private static Properties prop = new Properties();
 
 	public static int MinRam, MaxRam;
@@ -24,13 +24,13 @@ public class Config
 
 	public static void initConfig()
 	{
-		if (!configFile.exists())
-			createConfig();
+		createConfig();
 		loadConfig();
 	}
 
 	private static void createConfig()
 	{
+		configFile = new File(Core.coreDir, "config.pbconfig");
 		try
 		{
 			FileUtils.initFile(configFile);
