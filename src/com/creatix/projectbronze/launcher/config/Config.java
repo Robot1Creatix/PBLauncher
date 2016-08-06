@@ -12,65 +12,80 @@ import com.creatix.projectbronze.launcher.core.Core;
 import com.creatix.projectbronze.launcher.core.SystemProperty;
 import com.creatix.projectbronze.launcher.utils.FileUtils;
 
-public class Config {
-	
+public class Config
+{
+
 	public static char sep = File.separatorChar;
 	private static File configFile = new File(Core.coreDir, "config.pbconfig");
 	private static Properties prop = new Properties();
-	
+
 	public static int MinRam, MaxRam;
 	public static String mcDir;
-	
+
 	public static void initConfig()
 	{
-		if(!configFile.exists())
+		if (!configFile.exists())
 			createConfig();
 		loadConfig();
 	}
+
 	private static void createConfig()
 	{
-		try{
+		try
+		{
 			FileUtils.initFile(configFile);
+		}
+		catch (IOException e)
+		{
+			Core.log.error("Unable to create config file");
+			e.printStackTrace(Core.log);
+		}
+		try
+		{
 			genConfig();
 		}
-		catch(IOException e)
+		catch (IOException e)
 		{
+			Core.log.error("Unable to write config");
 			e.printStackTrace(Core.log);
 		}
 	}
-	private static void loadConfig(){
-		try {
+
+	private static void loadConfig()
+	{
+		try
+		{
 			InputStream in = new FileInputStream(configFile);
 			prop.load(in);
 			MinRam = new Integer(prop.getProperty("MinRam"));
 			MaxRam = new Integer(prop.getProperty("MaxRam"));
 			mcDir = prop.getProperty("MinecraftFolder");
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
+			Core.log.error("Unable to read config");
 			e.printStackTrace(Core.log);
 		}
 	}
+
 	private static void deleteConfig()
 	{
-		if(configFile.exists())
+		if (configFile.exists())
 			configFile.delete();
 	}
+
 	private static void regenConfig()
 	{
 		deleteConfig();
 		createConfig();
 	}
-	private static void genConfig(){
-		OutputStream outs = null;
-		try{
-			outs = new FileOutputStream(configFile);
-			prop.setProperty("MinRam", "1024");
-			prop.setProperty("MaxRam", "2048");
-			prop.setProperty("MinecraftFolder", new File(Core.coreDir, "Minecraft").getAbsolutePath());
-			prop.store(outs, "BronzeLauncher Config");
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace(Core.log);
-		}
+
+	private static void genConfig() throws IOException
+	{
+		OutputStream outs = new FileOutputStream(configFile);
+		prop.setProperty("MinRam", "1024");
+		prop.setProperty("MaxRam", "2048");
+		prop.setProperty("MinecraftFolder", new File(Core.coreDir, "Minecraft").getAbsolutePath());
+		prop.store(outs, "BronzeLauncher Config");
 	}
 }

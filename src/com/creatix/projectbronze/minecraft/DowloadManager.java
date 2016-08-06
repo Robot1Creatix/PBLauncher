@@ -24,19 +24,22 @@ public class DowloadManager
 
 	public static void dowloadNatives()
 	{
-		
+
 	}
-	
+
 	public static File getModpackList()
 	{
 		if (!dowloaded)
 		{
+			Core.log.info("Downloading modpack list");
 			if (list.exists())
 			{
 				list.delete();
+				Core.log.info("Old list detected. Deleting");
 			}
 			try
 			{
+				Core.log.info("Staring dowload");
 				FileUtils.initFile(list);
 				FileUtils.download(new URL("http://projectbronze.comli.com/launcher/mp.list"), list);
 			}
@@ -44,7 +47,9 @@ public class DowloadManager
 			{
 				Core.log.error("Unable to download modpack list");
 				e.printStackTrace(Core.log);
+				return list;//To not display succes message
 			}
+			Core.log.info("List dowloaded");
 			dowloaded = true;
 		}
 		return list;
@@ -53,22 +58,34 @@ public class DowloadManager
 	public static void downloadModpack(Modpack m)
 	{
 		Core.log.info("Dowloading modpack " + m.name);
+		File archive = new File(Core.tmpfolder, m.id + "pack.zip");
 		try
 		{
+
 			URL pack = new URL("http://projectbronze.comli.com/launcher/mps/" + m.id + "/pack.zip");
-			File archive;
-			FileUtils.download(pack, archive = new File(Core.tmpfolder, m.id + "pack.zip"));
-			Core.log.info("Download");
+			FileUtils.download(pack, archive);
+			Core.log.info("Downloaded");
+		}
+		catch (IOException e)
+		{
+			Core.log.error("Unable to dowload modpack archive");
+			e.printStackTrace(Core.log);
+		}
+		try
+		{
 			File dest = new File(Config.mcDir, m.id + File.separator + "pack");
-			FileUtils.deleteDir(dest);
-			Core.log.info("Deleted old version");
+			if (dest.exists())
+			{
+				FileUtils.deleteDir(dest);
+				Core.log.info("Deleted old version");
+			}
 			dest.mkdirs();
 			FileUtils.unzip(dest, archive);
 			Core.log.info("Unzipping complete, dowload succes");
 		}
 		catch (IOException e)
 		{
-			Core.log.error("Unable to download modpack");
+			Core.log.error("Unable to unzip modpack");
 			e.printStackTrace(Core.log);
 		}
 	}
@@ -80,16 +97,26 @@ public class DowloadManager
 			BufferedReader list = FileUtils.createReader(getModpackList());
 			for (String id = list.readLine(); id != null; id = list.readLine())
 			{
+				File archive = new File(Core.tmpfolder, id + "def.zip");
 				try
 				{
 					URL def = new URL("http://projectbronze.comli.com/launcher/mps/" + id + "/def.zip");
-					File archive;
-					FileUtils.download(def, archive = new File(Core.tmpfolder, id + "def.zip"));
-					FileUtils.unzip(new File(Config.mcDir, id), archive);
+					FileUtils.download(def, archive);
+					
 				}
 				catch (IOException e)
 				{
 					Core.log.error("Unable to dowload defenition for modpack " + id + ", check your internet");
+					e.printStackTrace(Core.log);
+					return;
+				}
+				try
+				{
+					FileUtils.unzip(new File(Config.mcDir, id), archive);
+				}
+				catch (IOException e)
+				{
+					Core.log.error("Unable to unzip defenition for modpack " + id);
 				}
 			}
 		}
@@ -112,7 +139,7 @@ public class DowloadManager
 		{
 			return getModpackDef(m.folder);
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
 			Core.log.error("Unable to read modpack defenition for modpack " + m.name);
 			e.printStackTrace(Core.log);
@@ -152,7 +179,6 @@ public class DowloadManager
 		File ver = new File(new File(m.folder, "pack"), "ver.txt");
 		try
 		{
-			FileUtils.initFile(ver);
 			BufferedReader r = FileUtils.createReader(ver);
 			ret = r.readLine();
 		}
