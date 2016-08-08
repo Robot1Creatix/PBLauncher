@@ -19,7 +19,7 @@ import com.google.gson.stream.JsonReader;
 
 public class DowloadManager
 {
-	private static File list = new File(Core.coreDir, "mp.list");
+	private static final File list = new File(Core.coreDir, "mp.list");
 	private static boolean dowloaded = false;
 
 	public static void dowloadNatives()
