@@ -33,7 +33,7 @@ public class MainPanel extends JPanel
 	{
 		initComponents();
 		//Fast way to init text on components
-		setModpakc(null);
+		setModpack(null);
 	}
 	
 	private void initComponents()
@@ -87,7 +87,7 @@ public class MainPanel extends JPanel
 	
 	private void initListners()
 	{
-		modpacks.addListSelectionListener((e) -> setModpakc(modpacks.getSelectedValue()));
+		modpacks.addListSelectionListener((e) -> setModpack(modpacks.getSelectedValue()));
 		update.addActionListener((e) -> dowloadPack());
 		play.addActionListener((e) -> {
 			dowloadPack();
@@ -118,7 +118,7 @@ public class MainPanel extends JPanel
 		}
 	}
 	
-	private void setModpakc(Modpack m)
+	private void setModpack(Modpack m)
 	{
 		if(m == null)
 		{
