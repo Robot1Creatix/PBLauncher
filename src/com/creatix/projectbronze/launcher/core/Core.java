@@ -28,7 +28,7 @@ public class Core
 		}
 		initFolders();
 		Logger.initLogFile();
-		log.debug(initializeSystem(), Core.class);
+		log.debug(initializeSystem());
 		Config.initConfig();
 		DowloadManager.downloadDefs();
 		Modpack.initModpacks();

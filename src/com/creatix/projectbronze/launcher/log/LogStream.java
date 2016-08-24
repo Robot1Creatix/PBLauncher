@@ -17,9 +17,10 @@ public class LogStream extends PrintStream
 		return "[" + MiscUtils.getTime() + "]";
 	}
 	
-	private static String sender(Class<?> s)
+	private static String sender()
 	{
-		return "[" + s.getName() + "]";
+		StackTraceElement e = Thread.currentThread().getStackTrace()[4];
+		return "[" + e.getClassName() + "#" + e.getMethodName() + "(Line:" + e.getLineNumber() + ")" + "]";
 	}
 	
 	public LogStream()
@@ -38,28 +39,28 @@ public class LogStream extends PrintStream
 		super.print(s);
 	}
 	
-	public void info(String s)
+	private void info(String s)
 	{
 		println(time() + info + s);
 	}
 	
-	public void debug(String s, Class<?> sender)
+	private void debug(String s)
 	{
 		if(Core.debug)
-		println(time() + debug + sender(sender) + s);
+		println(time() + debug + sender() + s);
 	}
 	
-	public void warning(String s)
+	private void warning(String s)
 	{
 		println(time() + warning + s);
 	}
 	
-	public void error(String s)
+	private void error(String s)
 	{
 		println(time() + error + s);
 	}
 	
-	public void fatal(String s, boolean kill, int exitcode)
+	private void fatal(String s, boolean kill, int exitcode)
 	{
 		println(time() + fatal + s);
 		if(kill)
@@ -73,9 +74,9 @@ public class LogStream extends PrintStream
 		info(s.toString());
 	}
 	
-	public void debug(Object s, Class<?> sender)
+	public void debug(Object s)
 	{
-		debug(s.toString(), sender);
+		debug(s.toString());
 	}
 	
 	public void warning(Object s)
