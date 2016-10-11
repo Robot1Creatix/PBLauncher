@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
+import com.gt22.gui.GUI;
 
 public class DowloadManager
 {
@@ -41,9 +43,9 @@ public class DowloadManager
 			{
 				Core.log.info("Staring dowload");
 				FileUtils.initFile(list);
-				FileUtils.download(new URL("http://projectbronze.comli.com/launcher/mp.list"), list);
+				FileUtils.download(new URL("http://projectbronze.comli.com/launcher/mp.list"), list, null, null).join();
 			}
-			catch (IOException e)
+			catch (Exception e)
 			{
 				Core.log.error("Unable to download modpack list");
 				e.printStackTrace(Core.log);
@@ -59,21 +61,31 @@ public class DowloadManager
 	{
 		Core.log.info("Dowloading modpack " + m.name);
 		File archive = new File(Core.tmpfolder, m.id + "pack.zip");
+		URL pack;
 		try
 		{
-
-			URL pack = new URL("http://projectbronze.comli.com/launcher/mps/" + m.id + "/pack.zip");
-			FileUtils.download(pack, archive);
-			Core.log.info("Downloaded");
+			pack = new URL("http://projectbronze.comli.com/launcher/mps/" + m.id + "/pack.zip");
+			FileUtils.download(pack, archive, () -> GUI.setFrameEnabled(false), () ->
+			{
+				Core.log.info("Downloaded modpack " + m.id);
+				unzipModpack(m.id, archive);
+				GUI.setFrameEnabled(true);
+			});
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			Core.log.error("Unable to dowload modpack archive");
 			e.printStackTrace(Core.log);
+			return;
 		}
+
+	}
+
+	private static void unzipModpack(String id, File archive)
+	{
 		try
 		{
-			File dest = new File(Config.mcDir, m.id + File.separator + "pack");
+			File dest = new File(Config.mcDir, id + File.separator + "pack");
 			if (dest.exists())
 			{
 				FileUtils.deleteDir(dest);
@@ -94,29 +106,32 @@ public class DowloadManager
 	{
 		try
 		{
+			Core.log.info("Starting to dowload modpack definitions");
 			BufferedReader list = FileUtils.createReader(getModpackList());
 			for (String id = list.readLine(); id != null; id = list.readLine())
 			{
+				final String fid = id;//Becouse lambda cannot work with non-final variable
 				File archive = new File(Core.tmpfolder, id + "def.zip");
 				try
 				{
 					URL def = new URL("http://projectbronze.comli.com/launcher/mps/" + id + "/def.zip");
-					FileUtils.download(def, archive);
-					
+					FileUtils.download(def, archive, () -> GUI.setFrameEnabled(false), () ->
+					{
+						try
+						{
+							FileUtils.unzip(new File(Config.mcDir, fid), archive);
+						}
+						catch (IOException e)
+						{
+							Core.log.error("Unable to unzip defenition for modpack " + fid);
+						}
+						GUI.setFrameEnabled(true);
+					});
 				}
-				catch (IOException e)
+				catch (Exception e)
 				{
-					Core.log.error("Unable to dowload defenition for modpack " + id + ", check your internet");
+					Core.log.error("Unable to dowload defenition for modpack " + fid + ", check your internet");
 					e.printStackTrace(Core.log);
-					return;
-				}
-				try
-				{
-					FileUtils.unzip(new File(Config.mcDir, id), archive);
-				}
-				catch (IOException e)
-				{
-					Core.log.error("Unable to unzip defenition for modpack " + id);
 				}
 			}
 		}
@@ -125,7 +140,7 @@ public class DowloadManager
 			Core.log.error("Unable to download modpack defenitions");
 			e.printStackTrace(Core.log);
 		}
-
+		Core.log.info("Dowloaded modpack defenitions");
 	}
 
 	public static JsonObject getModpackDef(File folder) throws IOException

@@ -15,13 +15,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import com.creatix.projectbronze.launcher.core.Core;
 
 public class FileUtils
 {
-	
+
 	/**
 	 * Create new BufferredReader for file
 	 */
@@ -29,7 +30,7 @@ public class FileUtils
 	{
 		return new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 	}
-	
+
 	/**
 	 * Create new BufferredWriter for file
 	 */
@@ -37,7 +38,7 @@ public class FileUtils
 	{
 		return createWriter(file, true);
 	}
-	
+
 	/**
 	 * Create new BufferredWriter for file
 	 * @param append file, or rewrite it using function wirte();
@@ -46,29 +47,29 @@ public class FileUtils
 	{
 		return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, append)));
 	}
-	
+
 	/**
 	 * Crates file if it not created
 	 * @param file
 	 */
 	public static void initFile(File file) throws IOException
 	{
-		if(!file.canWrite())
+		if (!file.canWrite())
 		{
-				file.getParentFile().mkdirs();
-				file.createNewFile();
+			file.getParentFile().mkdirs();
+			file.createNewFile();
 		}
 	}
-	
+
 	public static void recreateFile(File file) throws IOException
 	{
-		if(file.exists())
+		if (file.exists())
 		{
 			file.delete();
 		}
 		initFile(file);
 	}
-	
+
 	/**
 	 * Copy content of one file int another, files must exist, use {@link #initFile(File)}
 	 * @param to
@@ -80,10 +81,10 @@ public class FileUtils
 		BufferedReader reader = createReader(from);
 		BufferedWriter writer = createWriter(to);
 		StringBuffer buffer = new StringBuffer("");
-		while(true)
+		while (true)
 		{
 			String temp = reader.readLine();
-			if(temp == null)
+			if (temp == null)
 			{
 				break;
 			}
@@ -91,7 +92,7 @@ public class FileUtils
 		}
 		writer.write(buffer.toString());
 	}
-	
+
 	/**
 	 * Add line to file
 	 * @param file
@@ -101,7 +102,7 @@ public class FileUtils
 	{
 		addLine(file, line, true);
 	}
-	
+
 	/**
 	 * Add line to file
 	 * @param file
@@ -112,13 +113,13 @@ public class FileUtils
 	{
 		BufferedWriter writer = createWriter(file);
 		writer.write(line);
-		if(breakLine)
+		if (breakLine)
 		{
 			writer.newLine();
 		}
 		writer.close();
 	}
-	
+
 	/** 
 	  	Deletes the line at specified position (File must exist)
 		@param file
@@ -126,23 +127,23 @@ public class FileUtils
 	 */
 	public static void deleteLine(File file, int linetodelete) throws IOException
 	{
-			BufferedReader br= createReader(file);
-			StringBuffer sb=new StringBuffer("");
-			int linenumber=1;
-			String line;
- 
-			while((line=br.readLine())!=null)
-			{
-				if(linenumber != linetodelete)
-					sb.append(line+"\n");
-				linenumber++;
-			}
-			br.close();
-			BufferedWriter fw = createWriter(file, false);
-			fw.write(sb.toString());
-			fw.close();
+		BufferedReader br = createReader(file);
+		StringBuffer sb = new StringBuffer("");
+		int linenumber = 1;
+		String line;
+
+		while ((line = br.readLine()) != null)
+		{
+			if (linenumber != linetodelete)
+				sb.append(line + "\n");
+			linenumber++;
+		}
+		br.close();
+		BufferedWriter fw = createWriter(file, false);
+		fw.write(sb.toString());
+		fw.close();
 	}
-	
+
 	/**
 	 	Deletes the given line (File must exist)
 		@param file
@@ -160,96 +161,124 @@ public class FileUtils
 		list.close();
 		deleteLine(file, i);
 	}
-	
+
 	public static String readFile(File file) throws IOException
 	{
 		String ret = "";
 		BufferedReader in = createReader(file);
-		for(String tmp = in.readLine(); tmp != null; tmp = in.readLine())
+		for (String tmp = in.readLine(); tmp != null; tmp = in.readLine())
 		{
 			ret += tmp + '\n';
 		}
 		return ret;
 	}
-	
-	public static void download(URL url, File dest) throws IOException
-	{
-		if(dest.exists())
-			dest.delete();
-		InputStream in = new BufferedInputStream(url.openStream());
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		byte[] buf = new byte[1024];
-		int n = 0;
-		while ((n = in.read(buf)) != -1)
-		{
-			out.write(buf, 0, n);
-		}
-		out.close();
-		in.close();
-		initFile(dest);
-		FileOutputStream fos = new FileOutputStream(dest);
-		fos.write(out.toByteArray());
-		fos.close();
-	}
-	
-	public static void unzip(File destDir, File archive) throws IOException
-	{	
-	        if (!destDir.exists()) {
-	            destDir.mkdirs();
-	        }
-	        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(archive));
-	        ZipEntry entry = zipIn.getNextEntry();
-	        while (entry != null) {
-	        	String name = entry.getName();
-	            String filePath = destDir.getAbsolutePath() + File.separator + name;
-	            if (!entry.isDirectory()) {
-	            	if(name.indexOf(File.separatorChar) != -1)
-	            	{
-	            		new File(destDir, name.substring(0, name.lastIndexOf(File.separatorChar))).mkdirs(); 		
-	            	}
-	                extractFile(zipIn, filePath);
-	            } else {
-	                File dir = new File(filePath);
-	                dir.mkdirs();
-	            }
-	            zipIn.closeEntry();
-	            entry = zipIn.getNextEntry();
-	        }
-	        zipIn.close();
-	        //archive.delete();
-	}
-	
-	private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
-        File out = new File(filePath);
-        out.createNewFile();
-		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(out));
-        byte[] bytesIn = new byte[4096];
-        int read = 0;
-        while ((read = zipIn.read(bytesIn)) != -1) {
-            bos.write(bytesIn, 0, read);
-        }
-        bos.close();
-    }
 
-	public static void download(String url, File dest) throws IOException
+	/**
+	 *	@return The downloading thred, is exception occurs it will throw {@link RuntimeException} with cause of occured exception
+	 */
+	public static Thread download(URL url, File dest, Runnable onStarted, Runnable onEnded) throws RuntimeException
 	{
-		download(new URL(url), dest);
+		Thread thread = new Thread(() ->
+		{
+			try
+			{
+				if(onStarted != null)
+				{
+					onStarted.run();
+				}
+				if (dest.exists())
+					dest.delete();
+				initFile(dest);
+				InputStream in = url.openStream();
+				FileOutputStream out = new FileOutputStream(dest);
+				byte[] buf = new byte[1024];
+				int n = 0;
+				while ((n = in.read(buf)) != -1)
+				{
+					out.write(buf, 0, n);
+				}
+				out.close();
+				in.close();
+				TimeUnit.SECONDS.sleep(5);
+			}
+			catch (Exception e)
+			{
+				throw new RuntimeException(e);
+			}
+			if(onEnded != null){
+				onEnded.run();
+			}
+		});
+		thread.start();
+		thread.setUncaughtExceptionHandler((t, e) -> {throw new RuntimeException(e);});
+		return thread;
 	}
-	
+
+	public static void unzip(File destDir, File archive) throws IOException
+	{
+		if (!destDir.exists())
+		{
+			destDir.mkdirs();
+		}
+		ZipInputStream zipIn = new ZipInputStream(new FileInputStream(archive));
+		ZipEntry entry = zipIn.getNextEntry();
+		while (entry != null)
+		{
+			String name = entry.getName();
+			String filePath = destDir.getAbsolutePath() + File.separator + name;
+			if (!entry.isDirectory())
+			{
+				if (name.indexOf(File.separatorChar) != -1)
+				{
+					new File(destDir, name.substring(0, name.lastIndexOf(File.separatorChar))).mkdirs();
+				}
+				extractFile(zipIn, filePath);
+			}
+			else
+			{
+				File dir = new File(filePath);
+				dir.mkdirs();
+			}
+			zipIn.closeEntry();
+			entry = zipIn.getNextEntry();
+		}
+		zipIn.close();
+		//archive.delete();
+	}
+
+	private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException
+	{
+		File out = new File(filePath);
+		out.createNewFile();
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(out));
+		byte[] bytesIn = new byte[4096];
+		int read = 0;
+		while ((read = zipIn.read(bytesIn)) != -1)
+		{
+			bos.write(bytesIn, 0, read);
+		}
+		bos.close();
+	}
+
+	public static void download(String url, File dest, Runnable onStarted, Runnable onEnded) throws IOException
+	{
+		download(new URL(url), dest, onStarted, onEnded);
+	}
+
 	public static void deleteDir(File dir)
 	{
-		if(!dir.isDirectory())
+		if (!dir.isDirectory())
 		{
 			throw new IllegalArgumentException("File must be a directory");
 		}
-		if(!dir.exists())
+		if (!dir.exists())
 		{
 			return;
 		}
 		File[] files = dir.listFiles();
-		for(File f : files)
+		for (File f : files)
 		{
-			if(f.isDirectory())
+			if (f.isDirectory())
 			{
 				deleteDir(f);
 			}
@@ -260,5 +289,5 @@ public class FileUtils
 		}
 		dir.delete();
 	}
-	
+
 }

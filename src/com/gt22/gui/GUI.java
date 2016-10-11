@@ -1,5 +1,6 @@
 package com.gt22.gui;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -9,6 +10,7 @@ import com.gt22.gui.panel.JavaErrorFrame;
 
 public class GUI
 {
+	public static JFrame frame;
 	public static void init()
 	{
 		try
@@ -27,13 +29,21 @@ public class GUI
 			{
 				if (Core.isValidJava())
 				{
-					new MainFrame();
+					frame = new MainFrame();
 				}
 				else
 				{
-					new JavaErrorFrame();
+					frame = new JavaErrorFrame();
 				}
 			}
 		});
+	}
+	
+	public static void setFrameEnabled(boolean b)
+	{
+		if(frame != null)
+		{
+			frame.setEnabled(b);
+		}
 	}
 }
